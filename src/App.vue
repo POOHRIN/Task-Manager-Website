@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <div class="min-h-screen bg-gray-50 text-gray-800">
+    <!-- Simple navigation bar -->
+    <header class="bg-white shadow p-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600">Task Manager</h1>
+    </header>
+
+    <!-- This is where views (Login, Register, Dashboard) render -->
+    <main class="p-6">
+      <router-view />
+    </main>
+  </div>   
 </template>
 
 <style scoped>
