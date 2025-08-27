@@ -93,7 +93,7 @@ function toggleConfirm() {
       v-model="email"
       type="email"
       placeholder="Email"
-      class="border p-2 w-full mb-2"
+      class="border p-2 w-full mb-2 placeholder-gray-400 dark:placeholder-gray-500"
       @keydown="handleEmailKeydown"
     />
 
@@ -104,7 +104,7 @@ function toggleConfirm() {
         v-model="password"
         :type="showPassword ? 'text' : 'password'"
         placeholder="Password"
-        class="border p-2 w-full pr-10 rounded"
+        class="border p-2 w-full mb-2 placeholder-gray-400 dark:placeholder-gray-500"
         @keydown="handlePasswordKeydown"
       />
       <button
@@ -164,7 +164,7 @@ function toggleConfirm() {
         v-model="confirmPassword"
         :type="showConfirm ? 'text' : 'password'"
         placeholder="Confirm Password"
-        class="border p-2 w-full pr-10 rounded"
+        class="border p-2 w-full mb-2 placeholder-gray-400 dark:placeholder-gray-500"
         @keydown="handleConfirmKeydown"
       />
       <button
@@ -220,7 +220,8 @@ function toggleConfirm() {
     <!-- Register button -->
     <button
       @click="register"
-      class="bg-green-500 text-white px-4 py-2 rounded w-full"
+      :disabled="!email || !password || !confirmPassword"
+      class="w-full px-4 py-2 rounded text-white bg-green-500 hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
     >
       Register
     </button>

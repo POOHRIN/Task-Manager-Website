@@ -69,21 +69,22 @@ function togglePassword() {
       v-model="email"
       type="email"
       placeholder="Email"
-      class="border p-2 w-full mb-2"
+      class="border p-2 w-full mb-2 placeholder-gray-400 dark:placeholder-gray-500"
       @keydown="handleEmailKeydown"
     />
 
     <!-- Password -->
+    <!-- Password input -->
     <div class="relative w-full mb-2">
       <input
         ref="passwordInput"
         v-model="password"
-        :type="showPassword.value ? 'text' : 'password'"
+        :type="showPassword ? 'text' : 'password'"
         placeholder="Password"
-        class="border p-2 w-full pr-10 rounded"
+        class="border p-2 w-full pr-10 rounded placeholder-gray-400 dark:placeholder-gray-500"
         @keydown="handlePasswordKeydown"
       />
-      <!-- Show/Hide -->
+      <!-- Show/Hide button -->
       <button
         type="button"
         @click="togglePassword"
@@ -92,9 +93,8 @@ function togglePassword() {
       >
         <span
           :class="[
-            'w-5 h-5 inline-block',
+            'w-5 h-5 inline-block transition-all duration-300 ease-in-out',
             showPassword ? 'scale-125 opacity-100' : 'scale-100 opacity-60',
-            'transition-all duration-300 ease-in-out',
           ]"
         >
           <svg
@@ -137,7 +137,8 @@ function togglePassword() {
     <!-- Login button -->
     <button
       @click="login"
-      class="bg-blue-500 text-white px-4 py-2 rounded w-full"
+      :disabled="!email || !password"
+      class="w-full px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
     >
       Login
     </button>

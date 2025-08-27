@@ -15,15 +15,16 @@ async function addTask() {
 
 <template>
   <form @submit.prevent="addTask" class="flex gap-2 mb-4">
-    <input 
+    <input
       v-model="newTask"
       type="text"
       placeholder="Enter a new task"
-      class="flex-1 border p-2 rounded"
+      class="border p-2 w-full mb-2 placeholder-gray-400 dark:placeholder-gray-500"
     />
-    <button 
+    <button
       type="submit"
-      class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      :disabled="!newTask.trim()"
+      class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200 h-full"
     >
       Add
     </button>
