@@ -1,29 +1,26 @@
 <script setup lang="ts">
 import { useTaskStore } from "../store/taskStore";
+import TaskItem from "./TaskItem.vue";
 
 const taskStore = useTaskStore();
-taskStore.fetchTasks();
-
-function toggle(task: any) {
-  taskStore.toggleTask(task.id, !task.completed);
-}
-function remove(taskId: string) {
-  taskStore.deleteTask(taskId);
-}
 </script>
 
 <template>
-  <div>
-    <ul>
-      <li v-for="task in taskStore.tasks" :key="task.id" class="flex justify-between">
-        <span :class="{ 'line-through': task.completed }">{{ task.title }}</span>
-        <div>
-          <button @click="toggle(task)">
-            {{ task.completed ? "Undo" : "Complete" }}
-          </button>
-          <button @click="remove(task.id)">❌</button>
-        </div>
-      </li>
+  <div class="transition-colors duration-300">
+    <p v-if="taskStore.loading" class="text-gray-700 dark:text-gray-300 mb-2">Loading tasks...</p>
+    
+    <ul v-else>
+      <TaskItem 
+        v-for="task in taskStore.tasks" 
+        :key="task.id" 
+        :task="task" 
+      />
+      <p 
+        v-if="!taskStore.tasks.length" 
+        class="text-gray-600 dark:text-gray-400 mt-2"
+      >
+        No tasks yet.
+      </p>
     </ul>
   </div>
 </template>

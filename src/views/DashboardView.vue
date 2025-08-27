@@ -9,8 +9,6 @@ import { useRouter } from "vue-router";
 const taskStore = useTaskStore();
 const router = useRouter();
 
-taskStore.fetchTasks();
-
 async function logout() {
   await signOut(auth);
   router.push("/login");

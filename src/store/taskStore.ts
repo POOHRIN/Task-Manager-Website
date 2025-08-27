@@ -1,8 +1,14 @@
 import { defineStore } from "pinia";
-import { db, auth } from "../firebase/firebase";
-import { 
-  collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where 
+import { auth, db } from "../firebase/firebase";
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
 } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 interface Task {
   id?: string;
@@ -13,36 +19,50 @@ interface Task {
 export const useTaskStore = defineStore("task", {
   state: () => ({
     tasks: [] as Task[],
-    loading: false
+    unsubscribe: null as null | (() => void),
   }),
+
   actions: {
-    async fetchTasks() {
-      if (!auth.currentUser) return;
-      this.loading = true;
-      const q = query(collection(db, "users", auth.currentUser.uid, "tasks"));
-      const snapshot = await getDocs(q);
-      this.tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Task[];
-      this.loading = false;
+    init() {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const tasksRef = collection(db, "users", user.uid, "tasks");
+          this.unsubscribe = onSnapshot(tasksRef, (snapshot) => {
+            this.tasks = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            })) as Task[];
+            this.loading = false; // 🔑 done loading
+          });
+        } else {
+          this.tasks = [];
+          this.loading = false;
+          if (this.unsubscribe) {
+            this.unsubscribe();
+            this.unsubscribe = null;
+          }
+        }
+      });
     },
+
     async addTask(title: string) {
       if (!auth.currentUser) return;
       await addDoc(collection(db, "users", auth.currentUser.uid, "tasks"), {
         title,
-        completed: false
+        completed: false,
       });
-      await this.fetchTasks();
     },
+
     async toggleTask(id: string, completed: boolean) {
       if (!auth.currentUser) return;
       const ref = doc(db, "users", auth.currentUser.uid, "tasks", id);
       await updateDoc(ref, { completed });
-      await this.fetchTasks();
     },
+
     async deleteTask(id: string) {
       if (!auth.currentUser) return;
       const ref = doc(db, "users", auth.currentUser.uid, "tasks", id);
       await deleteDoc(ref);
-      await this.fetchTasks();
-    }
-  }
+    },
+  },
 });
