@@ -25,6 +25,7 @@ const firebaseErrors: Record<string, string> = {
   "auth/user-disabled": "This account has been disabled.",
   "auth/missing-password": "Missing password.",
   "auth/too-many-requests": "Too many attempts. Please try again later.",
+  "auth/weak-password": "Password must be at least 6 characters.",
 };
 
 async function register() {
