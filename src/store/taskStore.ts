@@ -10,29 +10,38 @@ import {
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
-interface Task {
-  id?: string;
+export interface Task {
+  id: string;
   title: string;
   completed: boolean;
 }
 
+interface TaskState {
+  tasks: Task[];
+  unsubscribe: null | (() => void);
+  loading: boolean;
+}
+
 export const useTaskStore = defineStore("task", {
-  state: () => ({
-    tasks: [] as Task[],
-    unsubscribe: null as null | (() => void),
+  state: (): TaskState => ({
+    tasks: [],
+    unsubscribe: null,
+    loading: true,
   }),
 
   actions: {
     init() {
+      this.loading = true;
+
       onAuthStateChanged(auth, (user) => {
         if (user) {
           const tasksRef = collection(db, "users", user.uid, "tasks");
           this.unsubscribe = onSnapshot(tasksRef, (snapshot) => {
             this.tasks = snapshot.docs.map((doc) => ({
               id: doc.id,
-              ...doc.data(),
-            })) as Task[];
-            this.loading = false; // 🔑 done loading
+              ...(doc.data() as Omit<Task, "id">),
+            }));
+            this.loading = false;
           });
         } else {
           this.tasks = [];

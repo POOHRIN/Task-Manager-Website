@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import { auth } from "../firebase/firebase";
-import { signOut } from "firebase/auth";
-import { useTaskStore } from "../store/taskStore";
 import TaskList from "../components/TaskList.vue";
 import AddTaskForm from "../components/AddTaskForm.vue";
-import { useRouter } from "vue-router";
-
-const taskStore = useTaskStore();
-const router = useRouter();
 </script>
 
 <template>
