@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
+    "deploy": "npm run build && gh-pages -d dist",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.21",
+    "gh-pages": "^6.3.0",
     "husky": "^9.1.7",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.12",
